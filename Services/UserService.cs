@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Entities;
 using WebApi.Helpers;
 
@@ -10,9 +11,11 @@ namespace WebApi.Services
     {
         User Authenticate(string username, string password);
         IEnumerable<User> GetAll();
+        List<User> GetUsersByWilayatId(string id);
         User GetById(int id);
         User Create(User user, string password);
         void Update(User user, string password = null);
+        List<User> GetUsersByPollingStationId(int id);
         void Delete(int id);
     }
 
@@ -30,7 +33,7 @@ namespace WebApi.Services
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;
 
-            var user = _context.Users.SingleOrDefault(x => x.Username == username);
+            var user = _context.Users.Include(values => values.Roles).Include(values => values.PollingStation).Include(values => values.Governorate).Include(values => values.Kiosks).Include(values => values.Wilayat).SingleOrDefault(x => x.Username == username);
 
             // check if username exists
             if (user == null)
@@ -51,14 +54,35 @@ namespace WebApi.Services
 
         public User GetById(int id)
         {
-            return _context.Users.Find(id);
+            return _context.Users.Include(values => values.Roles).Include(values => values.PollingStation).Include(values => values.Governorate).Include(values => values.Kiosks).Include(values => values.Wilayat).SingleOrDefault(x => x.Id == id);
+        }
+
+        public List<User> GetUsersByPollingStationId(int id)
+        {
+            return _context.Users.Include(values => values.Roles).Include(values => values.PollingStation).Include(values => values.Governorate).Include(values => values.Kiosks).Include(values => values.Wilayat).Where(values => values.PollingStationId == id).ToList();
         }
 
         public User Create(User user, string password)
         {
             // validation
+            if (string.IsNullOrWhiteSpace(user.NameEnglish))
+                throw new AppException("Name in english is required");
+            if (string.IsNullOrWhiteSpace(user.Email))
+                throw new AppException("Email is required");
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required");
+            if (string.IsNullOrWhiteSpace(user.Gender))
+                throw new AppException("Gender is required");
+            if (string.IsNullOrWhiteSpace(user.GovernorateCode))
+                throw new AppException("Governance is required");
+            if (string.IsNullOrEmpty(user.WilayatCode))
+                throw new AppException("Wilayat is required");
+            if (user.RoleId < 0)
+                throw new AppException("Role Id is required");
+            if (string.IsNullOrWhiteSpace(user.Phone))
+                throw new AppException("Phone is required");
+            if (_context.Users.Any(x => x.Phone == user.Phone))
+                throw new AppException("Phone \"" + user.Username + "\" is already given to other user");
 
             if (_context.Users.Any(x => x.Username == user.Username))
                 throw new AppException("Username \"" + user.Username + "\" is already taken");
@@ -68,7 +92,7 @@ namespace WebApi.Services
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-
+            Console.Write(user);
             _context.Users.Add(user);
             _context.SaveChanges();
 
@@ -90,9 +114,17 @@ namespace WebApi.Services
             }
 
             // update user properties
-            user.FirstName = userParam.FirstName;
-            user.LastName = userParam.LastName;
+            user.NameEnglish = userParam.NameEnglish;
+            user.NameArabic = userParam.NameArabic;
             user.Username = userParam.Username;
+            user.Phone = userParam.Phone;
+            user.PollingStationId = userParam.PollingStationId;
+            user.WilayatCode = userParam.WilayatCode;
+            user.KioskId = userParam.KioskId;
+            user.GovernorateCode = userParam.GovernorateCode;
+            user.ImageUrl = userParam.ImageUrl;
+            user.RoleId = userParam.RoleId;
+            user.Email = userParam.Email;
 
             // update password if it was entered
             if (!string.IsNullOrWhiteSpace(password))
@@ -149,6 +181,11 @@ namespace WebApi.Services
             }
 
             return true;
+        }
+
+        public List<User> GetUsersByWilayatId(string code)
+        {
+            return _context.Users.Include(values => values.Roles).Include(values => values.Kiosks).Include(values => values.PollingStation).Include(values => values.Wilayat).Where(values => values.WilayatCode == code).ToList();
         }
     }
 }

@@ -26,8 +26,9 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // configuration of db sql server
             services.AddCors();
-            services.AddDbContext<DataContext>(x => x.UseInMemoryDatabase("TestDb"));
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddAutoMapper();
 
@@ -73,6 +74,12 @@ namespace WebApi
 
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IGovernoratesService, GovernoratesService>();
+            services.AddScoped<IWilayatService, WilayatService>();
+            services.AddScoped<IPollingStationService, PollingStationService>();
+            services.AddScoped<IKiosksService, KiosksService>();
+            services.AddScoped<IKiosksAssignmentService, KiosksAssignmentService>();
+            services.AddScoped<IWitnessService, WitnessService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,6 +92,7 @@ namespace WebApi
                 .AllowAnyHeader());
 
             app.UseAuthentication();
+            app.UseStaticFiles();
 
             app.UseMvc();
         }
