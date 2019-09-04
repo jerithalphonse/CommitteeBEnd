@@ -532,6 +532,12 @@ namespace WebApi.Services
 
         object IKiosksAssignmentService.AssignKiosksToUser(KiosksAssign kiosksassign)
         {
+            var kiosksAssignTemp = _context.KiosksAssign.SingleOrDefault(x => x.MemberId == kiosksassign.MemberId);
+            if (kiosksAssignTemp != null)
+            {
+                _context.KiosksAssign.Remove(kiosksAssignTemp);
+                _context.SaveChanges();
+            }
             _context.KiosksAssign.Add(kiosksassign);
             _context.SaveChanges();
             return kiosksassign;
@@ -547,8 +553,6 @@ namespace WebApi.Services
         void Update(Witness witness);
         void Delete(int id);
     }
-
-
     public class WitnessService : IWitnessService
     {
         private DataContext _context;
@@ -622,4 +626,72 @@ namespace WebApi.Services
         }
     }
 
+    public interface IMessagingService
+    {
+        IEnumerable<MessagingModel> GetAll();
+        MessagingModel GetById(int id);
+        IQueryable<Object> GetMessagingByWilayatsId(string id);
+        MessagingModel Create(MessagingModel messaging);
+        void Update(MessagingModel messaging);
+        void Delete(int id);
+    }
+    public class MessagingService : IMessagingService
+    {
+        private DataContext _context;
+
+        public MessagingService(DataContext context)
+        {
+            _context = context;
+        }
+        public IQueryable<Object> GetMessagingByWilayatsId(string id)
+        {
+            return _context.Messaging.Include(values => values.Wilayat).Include(values => values.CreatedBy).Include(values => values.CreatedBy.Roles).Where(values => values.WilayatCode == id);
+        }
+        public IEnumerable<MessagingModel> GetAll()
+        {
+            return _context.Messaging;
+        }
+
+        public MessagingModel GetById(int id)
+        {
+            return _context.Messaging.Find(id);
+        }
+
+        public MessagingModel Create(MessagingModel messaging)
+        {
+            _context.Messaging.Add(messaging);
+            _context.SaveChanges();
+            return messaging;
+        }
+
+        public void Update(MessagingModel messagingParam)
+        {
+            var messaging = _context.Messaging.Find(messagingParam.Id);
+
+            if (messaging == null)
+                throw new AppException("Message not found");
+
+
+            // update user properties
+            messaging.Id = messagingParam.Id;
+            messaging.WilayatCode = messagingParam.WilayatCode;
+            messaging.By = messagingParam.By;
+            messaging.CreatedAt = messagingParam.CreatedAt;
+            messaging.Message = messagingParam.Message;
+            messaging.To = messagingParam.To;
+            messaging.WilayatCode = messagingParam.WilayatCode;
+            _context.Messaging.Update(messaging);
+            _context.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var messaging = _context.Messaging.Find(id);
+            if (messaging != null)
+            {
+                _context.Messaging.Remove(messaging);
+                _context.SaveChanges();
+            }
+        }
+    }
 }

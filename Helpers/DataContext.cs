@@ -15,5 +15,6 @@ namespace WebApi.Helpers
         public DbSet<Kiosks> Kiosks { get; set; }
         public DbSet<KiosksAssign> KiosksAssign { get; set; }
         public DbSet<Witness> Witness { get; set; }
+        public DbSet<MessagingModel> Messaging { get; set; }
     }
 }

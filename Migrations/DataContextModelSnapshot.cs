@@ -19,49 +19,44 @@ namespace WebApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-
-            modelBuilder.Entity("WebApi.Entities.Witness", b =>
+            modelBuilder.Entity("WebApi.Entities.MessagingModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ImageUrl");
+                    b.Property<int?>("By");
 
-                    b.Property<int>("PollingStationID");
+                    b.Property<string>("CreatedAt");
 
-                    b.Property<int?>("UploadedBy");
+                    b.Property<string>("Message");
 
-                    b.Property<string>("UploadedTime");
+                    b.Property<string>("To");
 
                     b.Property<string>("WilayatCode");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PollingStationID");
-
-                    b.HasIndex("UploadedBy");
+                    b.HasIndex("By");
 
                     b.HasIndex("WilayatCode");
 
-                    b.ToTable("Witness");
+                    b.ToTable("Messaging");
                 });
 
-            modelBuilder.Entity("WebApi.Entities.Witness", b =>
-                {
-                    b.HasOne("WebApi.Entities.PollingStations", "PollingStation")
-                        .WithMany()
-                        .HasForeignKey("PollingStationID")
-                        .OnDelete(DeleteBehavior.Cascade);
+           
 
-                    b.HasOne("WebApi.Entities.User", "uploadedByMember")
+            modelBuilder.Entity("WebApi.Entities.MessagingModel", b =>
+                {
+                    b.HasOne("WebApi.Entities.User", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("UploadedBy");
+                        .HasForeignKey("By");
 
                     b.HasOne("WebApi.Entities.Wilayats", "Wilayat")
                         .WithMany()
                         .HasForeignKey("WilayatCode");
                 });
+
 #pragma warning restore 612, 618
         }
     }

@@ -53,6 +53,7 @@ namespace WebApi.Dtos
         [ForeignKey("PollingStationID")]
         public PollingStations PollingStation { get; set; }
     }
+
     public class WilayatsDto
     {
         [Key]
@@ -127,7 +128,7 @@ namespace WebApi.Dtos
     public class ImagesDto
     {
         public int Id { get; set; }
-        public string Title { get; set; }
+        public string Message { get; set; }
         public string ImagePath { get; set; }
         public int? MemberId { get; set; }
         public int? KioskId { get; set; }
@@ -141,5 +142,20 @@ namespace WebApi.Dtos
         public Kiosks kiosks { get; set; }
         [ForeignKey("PollingStationID")]
         public PollingStations PollingStation { get; set; }
+    }
+
+    public class MessagingDto
+    {
+        public int Id { get; set; }
+        public int? By { get; set; }
+        public string To { get; set; }
+        public string CreatedAt { get; set; }
+        public string Message { get; set; }
+        public string WilayatCode { get; set; }
+
+        [ForeignKey("WilayatCode")]
+        public Wilayats Wilayat { get; set; }
+        [ForeignKey("By")]
+        public User CreatedBy { get; set; }
     }
 }

@@ -80,6 +80,7 @@ namespace WebApi
             services.AddScoped<IKiosksService, KiosksService>();
             services.AddScoped<IKiosksAssignmentService, KiosksAssignmentService>();
             services.AddScoped<IWitnessService, WitnessService>();
+            services.AddScoped<IMessagingService, MessagingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -140,4 +140,19 @@ namespace WebApi.Entities
         [ForeignKey("PollingStationID")]
         public PollingStations PollingStation { get; set; }
     }
+
+    public class MessagingModel
+    {
+        public int Id { get; set; }
+        public int? By { get; set; }
+        public string To { get; set; }
+        public string CreatedAt { get; set; }
+        public string Message { get; set; }
+        public string WilayatCode { get; set; }
+
+        [ForeignKey("WilayatCode")]
+        public Wilayats Wilayat { get; set; }
+        [ForeignKey("By")]
+        public User CreatedBy { get; set; }
+    }
 }
