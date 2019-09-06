@@ -81,6 +81,7 @@ namespace WebApi.Controllers
                 CommiteeType = user.CommiteeType,
                 KioskId = user.KioskId,
                 RoleId = user.RoleId,
+                AttendedAt = user.AttendedAt,
                 GovernorateCode = user.GovernorateCode,
                 Roles = user.Roles,
                 Wilayat = user.Wilayat,

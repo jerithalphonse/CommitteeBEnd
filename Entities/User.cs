@@ -15,7 +15,8 @@ namespace WebApi.Entities
         public string Gender { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-      
+        public string AttendedAt { get; set; }
+
         public string GovernorateCode { get; set; }
         public string WilayatCode { get; set; }
         public int? PollingStationId { get; set; }

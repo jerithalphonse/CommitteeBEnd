@@ -16,6 +16,7 @@ namespace WebApi.Dtos
         public string CommiteeType { get; set; }
         public string Gender { get; set; }
         public string Password { get; set; }
+        public string AttendedAt { get; set; }
 
         public string GovernorateCode { get; set; }
         public string WilayatCode { get; set; }
