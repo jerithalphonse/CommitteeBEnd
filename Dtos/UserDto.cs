@@ -20,9 +20,9 @@ namespace WebApi.Dtos
 
         public string GovernorateCode { get; set; }
         public string WilayatCode { get; set; }
-        public int PollingStationId { get; set; }
-        public int KioskId { get; set; }
-        public int RoleId { get; set; }
+        public int? PollingStationId { get; set; }
+        public int? KioskId { get; set; }
+        public int? RoleId { get; set; }
 
         [ForeignKey("GovernorateCode")]
         public Governorates Governorate { get; set; }

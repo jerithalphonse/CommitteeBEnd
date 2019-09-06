@@ -463,7 +463,8 @@ namespace WebApi.Services
                        PollingStation = users.PollingStation,
                        Kiosks = users.Kiosks,
                        RoleId = users.RoleId,
-                       roles = users.Roles
+                       roles = users.Roles,
+                       KiosksAssigned = kiosksassigns
                    };
         }
 

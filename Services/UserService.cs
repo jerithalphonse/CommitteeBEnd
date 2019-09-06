@@ -125,6 +125,7 @@ namespace WebApi.Services
             user.ImageUrl = userParam.ImageUrl;
             user.RoleId = userParam.RoleId;
             user.Email = userParam.Email;
+            user.AttendedAt = userParam.AttendedAt;
 
             // update password if it was entered
             if (!string.IsNullOrWhiteSpace(password))
