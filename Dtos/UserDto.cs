@@ -36,4 +36,11 @@ namespace WebApi.Dtos
         public Roles Roles { get; set; }
     }
 
+    public class ChangePassword
+    {
+        public int Id { get; set; }
+        public string oldpassword { get; set; }
+        public string newpassword { get; set; }
+    }
+
 }

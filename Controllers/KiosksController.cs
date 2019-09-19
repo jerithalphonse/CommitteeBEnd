@@ -46,6 +46,7 @@ namespace WebApi.Controllers
         [HttpGet("serial/{id}")]
         public OkObjectResult GetBySerialId(string id)
         {
+            
             var kiosks = _kiosksService.GetBySerialId(id);
             //var kiosksDto = _mapper.Map<KiosksDto>(kiosks);
             return Ok(kiosks);

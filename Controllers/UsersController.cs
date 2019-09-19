@@ -110,6 +110,21 @@ namespace WebApi.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+        [HttpPost("changepassword")]
+        public IActionResult changePassword([FromBody]ChangePassword changePassword)
+        {
+            try
+            {
+                var temp = _userService.UpdatePassword(changePassword.Id, changePassword.oldpassword, changePassword.newpassword);
+                return Ok(new { success = temp });
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+            return Ok();
+        }
         [HttpPost("assignpollingstationusers")]
         public IActionResult assignPollingStationUsers([FromBody]List<UserDto> users)
         {

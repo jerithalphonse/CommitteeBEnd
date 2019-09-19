@@ -10,6 +10,7 @@ namespace WebApi.Services
     public interface IUserService
     {
         User Authenticate(string username, string password);
+        bool UpdatePassword(int id, string oldpassword, string newpassword);
         IEnumerable<User> GetAll();
         List<User> GetUsersByWilayatId(string id);
         User GetById(int id);
@@ -26,6 +27,27 @@ namespace WebApi.Services
         public UserService(DataContext context)
         {
             _context = context;
+        }
+
+        public bool UpdatePassword(int id, string oldpassword, string newpassword)
+        {
+            var user =  _context.Users.SingleOrDefault(x => x.Id == id);
+            if (!VerifyPasswordHash(oldpassword, user.PasswordHash, user.PasswordSalt))
+                return false;
+
+
+            if (!string.IsNullOrWhiteSpace(newpassword))
+            {
+                byte[] passwordHash, passwordSalt;
+                CreatePasswordHash(newpassword, out passwordHash, out passwordSalt);
+
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+            }
+
+            _context.Users.Update(user);
+            _context.SaveChanges();
+            return true;
         }
 
         public User Authenticate(string username, string password)
