@@ -79,6 +79,21 @@ namespace WebApi.Controllers
             //var kiosksDtos = _mapper.Map<IList<KiosksDto>>(kiosks);
             return Ok(kiosks);
         }
+        [HttpGet("governorate/attendance/{id}")]
+        public OkObjectResult GetUsersByGovernorateId(string id)
+        {
+            var kiosks = _kiosksAssignmentService.GetUsersByGovernorateId(id);
+            //var kiosksDtos = _mapper.Map<IList<KiosksDto>>(kiosks);
+            return Ok(kiosks);
+        }
+
+        [HttpGet("attendance")]
+        public OkObjectResult GetUsersAll()
+        {
+            var kiosks = _kiosksAssignmentService.GetUsersAll();
+            //var kiosksDtos = _mapper.Map<IList<KiosksDto>>(kiosks);
+            return Ok(kiosks);
+        }
 
 
         [HttpGet("kiosks/{id}")]

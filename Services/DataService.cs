@@ -218,6 +218,8 @@ namespace WebApi.Services
         Kiosks GetById(int id);
         IQueryable<Kiosks> GetBySerialId(string serial);
         IQueryable<Object> GetKiosksAssignedByWilayatsId(string id);
+        IQueryable<Object> GetKiosksAssignedByGovernorateId(string id);
+        IQueryable<Object> GetKiosksAssignedAll();
         IEnumerable<Kiosks> GetKiosksByPollingStationId(int id);
         IQueryable<Object> GetKiosksLockedStatusByWilayatsId(string id);
         List<Kiosks> GetKiosksByWilayatsId(string id);
@@ -302,23 +304,61 @@ namespace WebApi.Services
                        kiosksAssigned = assigns,
                        kiosksAssignedBy = assigns.member
                    };
-            //select new
-            //{
-            //    id = kiosksassigns.Id,
-            //    memberId = kiosksassigns.MemberId,
-            //    assignedBy = kiosksassigns.AssignedBy,
-            //    kioskId = kiosksassigns.KioskId,
-            //    pollingStationID = kiosksassigns.PollingStationID,
-            //    attendanceStartedAt = kiosksassigns.AttendanceStartedAt,
-            //    attendanceCompletedAt = kiosksassigns.AttendanceCompletedAt,
-            //    isDeleted = kiosksassigns.isDeleted,
-            //    kiosksassigns.assignedbymember,
-            //    kiosksassigns.member,
-            //    kiosksassigns.kiosks,
-            //    kiosksassigns.PollingStation
-            //};
         }
 
+        public IQueryable<Object> GetKiosksAssignedByGovernorateId(string id)
+        {
+            return from kioskslist in _context.Kiosks
+                   join kiosksWilayat in _context.Wilayats on kioskslist.WilayatCode equals kiosksWilayat.Code
+                   join kiosksassign in _context.KiosksAssign on kioskslist.Id equals kiosksassign.KioskId into kiosksassigns
+                   from assigns in kiosksassigns.DefaultIfEmpty()
+                   where kiosksWilayat.GovernorateCode == id
+                   select new
+                   {
+                       Id = kioskslist.Id,
+                       SerialNumber = kioskslist.SerialNumber,
+                       PollingDayStatus = kioskslist.PollingDayStatus,
+                       OpenTime = kioskslist.OpenTime,
+                       HasIssue = kioskslist.HasIssue,
+                       CloseTime = kioskslist.CloseTime,
+                       UnlockCode = kioskslist.UnlockCode,
+                       WilayatCode = kioskslist.WilayatCode,
+                       IsActive = kioskslist.IsActive,
+                       IsUnifiedKiosk = kioskslist.IsUnifiedKiosk,
+                       AreVotersPresentAsWitnesses = kioskslist.AreVotersPresentAsWitnesses,
+                       IsNoFingerprintKiosk = kioskslist.IsNoFingerprintKiosk,
+                       PollingStationID = kioskslist.PollingStationID,
+                       PollingStation = kioskslist.PollingStation,
+                       kiosksAssigned = assigns,
+                       kiosksAssignedBy = assigns.member
+                   };
+        }
+
+        public IQueryable<Object> GetKiosksAssignedAll()
+        {
+            return from kioskslist in _context.Kiosks
+                   join kiosksassign in _context.KiosksAssign on kioskslist.Id equals kiosksassign.KioskId into kiosksassigns
+                   from assigns in kiosksassigns.DefaultIfEmpty()
+                   select new
+                   {
+                       Id = kioskslist.Id,
+                       SerialNumber = kioskslist.SerialNumber,
+                       PollingDayStatus = kioskslist.PollingDayStatus,
+                       OpenTime = kioskslist.OpenTime,
+                       HasIssue = kioskslist.HasIssue,
+                       CloseTime = kioskslist.CloseTime,
+                       UnlockCode = kioskslist.UnlockCode,
+                       WilayatCode = kioskslist.WilayatCode,
+                       IsActive = kioskslist.IsActive,
+                       IsUnifiedKiosk = kioskslist.IsUnifiedKiosk,
+                       AreVotersPresentAsWitnesses = kioskslist.AreVotersPresentAsWitnesses,
+                       IsNoFingerprintKiosk = kioskslist.IsNoFingerprintKiosk,
+                       PollingStationID = kioskslist.PollingStationID,
+                       PollingStation = kioskslist.PollingStation,
+                       kiosksAssigned = assigns,
+                       kiosksAssignedBy = assigns.member
+                   };
+        }
 
 
 
@@ -384,6 +424,8 @@ namespace WebApi.Services
         KiosksAssign GetById(int id);
         IQueryable<object> GetUsersByKiosksId(int id);
         IQueryable<object> GetUsersByWilayatsId(string id);
+        IQueryable<object> GetUsersByGovernorateId(string id);
+        IQueryable<object> GetUsersAll();
         IQueryable<object> GetUsersByPollingStationId(int id);
         List<KiosksAssign> GetKiosksByPollingStationId(int id);
         KiosksAssign Create(KiosksAssign wilayats);
@@ -424,6 +466,55 @@ namespace WebApi.Services
                    join kiosksassign in _context.KiosksAssign on users.Id equals kiosksassign.MemberId into kiosksassigns
                    from assigns in kiosksassigns.DefaultIfEmpty()
                    where users.WilayatCode == id
+                   select new
+                   {
+                       Id = users.Id,
+                       NameEnglish = users.NameEnglish,
+                       NameArabic = users.NameArabic,
+                       Username = users.Username,
+                       Phone = users.Phone,
+                       Email = users.Email,
+                       ImageUrl = users.ImageUrl,
+                       CommiteeType = users.CommiteeType,
+                       Gender = users.Gender,
+                       PollingStation = users.PollingStation,
+                       Kiosks = users.Kiosks,
+                       RoleId = users.RoleId,
+                       roles = users.Roles,
+                       kiosksAssigned = assigns,
+                       kiosksAssignedKiosk = assigns.kiosks
+                   };
+        }
+        public IQueryable<object> GetUsersByGovernorateId(string id)
+        {
+            return from users in _context.Users
+                   join kiosksassign in _context.KiosksAssign on users.Id equals kiosksassign.MemberId into kiosksassigns
+                   from assigns in kiosksassigns.DefaultIfEmpty()
+                   where users.GovernorateCode == id
+                   select new
+                   {
+                       Id = users.Id,
+                       NameEnglish = users.NameEnglish,
+                       NameArabic = users.NameArabic,
+                       Username = users.Username,
+                       Phone = users.Phone,
+                       Email = users.Email,
+                       ImageUrl = users.ImageUrl,
+                       CommiteeType = users.CommiteeType,
+                       Gender = users.Gender,
+                       PollingStation = users.PollingStation,
+                       Kiosks = users.Kiosks,
+                       RoleId = users.RoleId,
+                       roles = users.Roles,
+                       kiosksAssigned = assigns,
+                       kiosksAssignedKiosk = assigns.kiosks
+                   };
+        }
+        public IQueryable<object> GetUsersAll()
+        {
+            return from users in _context.Users
+                   join kiosksassign in _context.KiosksAssign on users.Id equals kiosksassign.MemberId into kiosksassigns
+                   from assigns in kiosksassigns.DefaultIfEmpty()
                    select new
                    {
                        Id = users.Id,
