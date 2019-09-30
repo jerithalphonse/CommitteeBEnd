@@ -45,6 +45,14 @@ namespace WebApi.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("gettext")]
+        public IActionResult GetText()
+        {
+            return Ok("Hello World");
+        }
+
+
+        [AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]UserDto userDto)
         {
