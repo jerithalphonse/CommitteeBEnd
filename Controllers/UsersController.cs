@@ -160,6 +160,21 @@ namespace WebApi.Controllers
             var userDtos = _mapper.Map<IList<UserDto>>(users);
             return Ok(userDtos);
         }
+        [HttpGet("wilayat/{code}")]
+        public IActionResult GetUsersUnderPollingStation(string code)
+        {
+            var users = _userService.GetUsersByWilayatId(code);
+            var userDtos = _mapper.Map<IList<UserDto>>(users);
+            return Ok(userDtos);
+        }
+        [HttpGet("governorate/{code}")]
+        public IActionResult GetUsersByGovernorateId(string code)
+        {
+            var users = _userService.GetUsersByGovernorateId(code);
+            var userDtos = _mapper.Map<IList<UserDto>>(users);
+            return Ok(userDtos);
+        }
+        
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
@@ -169,13 +184,7 @@ namespace WebApi.Controllers
             return Ok(userDto);
         }
 
-        [HttpGet("wilayat/{code}")]
-        public IActionResult GetUsersUnderPollingStation(string code)
-        {
-            var users = _userService.GetUsersByWilayatId(code);
-            var userDtos = _mapper.Map<IList<UserDto>>(users);
-            return Ok(userDtos);
-        }
+       
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody]UserDto userDto)

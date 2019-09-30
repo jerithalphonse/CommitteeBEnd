@@ -13,6 +13,7 @@ namespace WebApi.Services
         bool UpdatePassword(int id, string oldpassword, string newpassword);
         IEnumerable<User> GetAll();
         List<User> GetUsersByWilayatId(string id);
+        List<User> GetUsersByGovernorateId(string id);
         User GetById(int id);
         User Create(User user, string password);
         void Update(User user, string password = null);
@@ -209,6 +210,10 @@ namespace WebApi.Services
         public List<User> GetUsersByWilayatId(string code)
         {
             return _context.Users.Include(values => values.Roles).Include(values => values.Kiosks).Include(values => values.PollingStation).Include(values => values.Wilayat).Where(values => values.WilayatCode == code).ToList();
+        }
+        public List<User> GetUsersByGovernorateId(string code)
+        {
+            return _context.Users.Include(values => values.Roles).Include(values => values.Kiosks).Include(values => values.PollingStation).Include(values => values.Wilayat).Where(values => values.GovernorateCode == code).ToList();
         }
     }
 }
