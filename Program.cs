@@ -17,7 +17,7 @@ namespace WebApi
                 .UseWebRoot("public")
                 .UseIISIntegration()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseUrls("http://0.0.0.0:4000")
+                .UseUrls("http://0.0.0.0:5026")
                 .Build();
     }
 }
