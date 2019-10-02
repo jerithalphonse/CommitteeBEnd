@@ -244,7 +244,7 @@ namespace WebApi.Controllers
             foreach (var formFile in files)
             {
                 var file = System.IO.Path.Combine(webRoot + "/" + userId, formFile.FileName);
-                FilesUploaded.Add("http://192.168.43.9:4000" + "/" + userId + "/" + formFile.FileName);
+                FilesUploaded.Add("http://5.37.60.164:5026/committeebackend" + "/" + userId + "/" + formFile.FileName);
                 if (formFile.Length > 0)
                 {
                     using (var stream = new FileStream(file, FileMode.Create))
