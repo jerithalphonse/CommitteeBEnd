@@ -25,6 +25,7 @@ namespace WebApi.Entities
         public bool MessageTabCheckMessage { get; set; }
         public bool MessageTabRestrictMessage { get; set; }
         public bool NotificationTab { get; set; }
+        public bool? CountingSoftwareTab { get; set; }
     }
     public class Governorates
     {
@@ -66,6 +67,20 @@ namespace WebApi.Entities
         [ForeignKey("GovernorateCode")]
         public Governorates Governorate { get; set; }
     }
+
+    public class CountingSoftwareUsers
+    {
+       
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string WilayatCode { get; set; }
+        public int RoleId { get; set; }
+
+        [ForeignKey("WilayatCode")]
+        public Wilayats Wilayat { get; set; }
+    }
+
     public class PollingStations
     {
         public int Id { get; set; }
@@ -146,6 +161,7 @@ namespace WebApi.Entities
         public int Id { get; set; }
         public int? By { get; set; }
         public string To { get; set; }
+        public int? ToId { get; set; }
         public string CreatedAt { get; set; }
         public string Message { get; set; }
         public string WilayatCode { get; set; }
@@ -154,5 +170,7 @@ namespace WebApi.Entities
         public Wilayats Wilayat { get; set; }
         [ForeignKey("By")]
         public User CreatedBy { get; set; }
+        [ForeignKey("ToId")]
+        public User CreatedToUser { get; set; }
     }
 }

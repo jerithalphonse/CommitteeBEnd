@@ -26,6 +26,7 @@ namespace WebApi.Dtos
         public bool MessageTabCheckMessage { get; set; }
         public bool MessageTabRestrictMessage { get; set; }
         public bool NotificationTab { get; set; }
+        public bool? CountingSoftwareTab { get; set; }
     }
     public class GovernoratesDto
 	{
@@ -67,6 +68,18 @@ namespace WebApi.Dtos
         [ForeignKey("GovernorateCode")]
         public Governorates Governorate { get; set; }
     }
+    public class CountingSoftwareUsersDto
+    {
+        public string Id { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string WilayatCode { get; set; }
+        public int RoleId { get; set; }
+
+        [ForeignKey("WilayatCode")]
+        public Wilayats Wilayat { get; set; }
+    }
+
     public class PollingStationsDto
     {
         public int Id { get; set; }
@@ -149,6 +162,7 @@ namespace WebApi.Dtos
         public int Id { get; set; }
         public int? By { get; set; }
         public string To { get; set; }
+        public int? ToId { get; set; }
         public string CreatedAt { get; set; }
         public string Message { get; set; }
         public string WilayatCode { get; set; }
@@ -157,5 +171,7 @@ namespace WebApi.Dtos
         public Wilayats Wilayat { get; set; }
         [ForeignKey("By")]
         public User CreatedBy { get; set; }
+        [ForeignKey("ToId")]
+        public User CreatedToUser { get; set; }
     }
 }

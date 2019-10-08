@@ -18,6 +18,7 @@ namespace WebApi.Services
         User Create(User user, string password);
         void Update(User user, string password = null);
         List<User> GetUsersByPollingStationId(int id);
+        List<User> GetUsersByWilayatCodenRoleId(string code, int id);
         void Delete(int id);
     }
 
@@ -83,6 +84,11 @@ namespace WebApi.Services
         public List<User> GetUsersByPollingStationId(int id)
         {
             return _context.Users.Include(values => values.Roles).Include(values => values.PollingStation).Include(values => values.Governorate).Include(values => values.Kiosks).Include(values => values.Wilayat).Where(values => values.PollingStationId == id).ToList();
+        }
+
+        public List<User> GetUsersByWilayatCodenRoleId(string code, int id)
+        {
+            return _context.Users.Include(values => values.Roles).Include(values => values.PollingStation).Include(values => values.Governorate).Include(values => values.Kiosks).Include(values => values.Wilayat).Where(values => values.WilayatCode == code && values.RoleId == id).ToList();
         }
 
         public User Create(User user, string password)

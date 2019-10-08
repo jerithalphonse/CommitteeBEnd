@@ -46,7 +46,8 @@ namespace WebApi.Controllers
         public OkObjectResult GetMessagesByWilayatsId(string id)
         {
             var messages = _messagingService.GetMessagingByWilayatsId(id);
-            return Ok(messages);
+            var messagingDtos = _mapper.Map<IList<MessagingDto>>(messages);
+            return Ok(messagingDtos);
         }
         // GET api/values/5
         [HttpGet("{id}")]

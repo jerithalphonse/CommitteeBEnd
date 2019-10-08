@@ -131,7 +131,6 @@ namespace WebApi.Controllers
                 // return error message if there was an exception
                 return BadRequest(new { message = ex.Message });
             }
-            return Ok();
         }
         [HttpPost("assignpollingstationusers")]
         public IActionResult assignPollingStationUsers([FromBody]List<UserDto> users)
@@ -160,6 +159,14 @@ namespace WebApi.Controllers
             return Ok(userDtos);
         }
 
+        [HttpGet("wilayat/{code}/{roleid}")]
+        public OkObjectResult Get(string code, int roleid)
+        {
+            var users = _userService.GetUsersByWilayatCodenRoleId(code, roleid);
+            var userDtos = _mapper.Map<IList<UserDto>>(users);
+            return Ok(userDtos);
+        }
+
         // GET api/values/5
         [HttpGet("pollingstation/{id}")]
         public OkObjectResult Get(int id)
@@ -169,7 +176,7 @@ namespace WebApi.Controllers
             return Ok(userDtos);
         }
         [HttpGet("wilayat/{code}")]
-        public IActionResult GetUsersUnderPollingStation(string code)
+        public IActionResult GetUsersByWilayatId(string code)
         {
             var users = _userService.GetUsersByWilayatId(code);
             var userDtos = _mapper.Map<IList<UserDto>>(users);

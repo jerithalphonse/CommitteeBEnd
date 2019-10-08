@@ -11,6 +11,7 @@ namespace WebApi.Helpers
         public DbSet<User> Users { get; set; }
         public DbSet<Governorates> Governorates { get; set; }
         public DbSet<Wilayats> Wilayats { get; set; }
+        public DbSet<CountingSoftwareUsers> CountingSoftwareUsers { get; set; }
         public DbSet<PollingStations> PollingStations { get; set; }
         public DbSet<Kiosks> Kiosks { get; set; }
         public DbSet<KiosksAssign> KiosksAssign { get; set; }

@@ -737,7 +737,7 @@ namespace WebApi.Services
         }
         public IQueryable<Object> GetMessagingByWilayatsId(string id)
         {
-            return _context.Messaging.Include(values => values.Wilayat).Include(values => values.CreatedBy).Include(values => values.CreatedBy.Roles).Where(values => values.WilayatCode == id);
+            return _context.Messaging.Include(values => values.CreatedBy).Include(values => values.CreatedToUser).Where(values => values.WilayatCode == id || values.WilayatCode == null);
         }
         public IEnumerable<MessagingModel> GetAll()
         {
@@ -782,6 +782,82 @@ namespace WebApi.Services
             if (messaging != null)
             {
                 _context.Messaging.Remove(messaging);
+                _context.SaveChanges();
+            }
+        }
+    }
+
+    public interface ICountingSoftwareService
+    {
+        IEnumerable<CountingSoftwareUsers> GetAll();
+        CountingSoftwareUsers GetById(int id);
+        List<CountingSoftwareUsers> GetWilayatsByWilayatId(string id);
+        List<CountingSoftwareUsers> GetWilayatsByWilayatIdRoleId(string code, int roleid);
+        CountingSoftwareUsers Create(CountingSoftwareUsers wilayats);
+        void Update(CountingSoftwareUsers wilayats);
+        void Delete(int id);
+    }
+
+    public class CountingSoftwareService : ICountingSoftwareService
+    {
+        private DataContext _context;
+
+        public CountingSoftwareService(DataContext context)
+        {
+            _context = context;
+        }
+
+        public IEnumerable<CountingSoftwareUsers> GetAll()
+        {
+            return _context.CountingSoftwareUsers.Include(values => values.Wilayat);
+        }
+
+        public CountingSoftwareUsers GetById(int id)
+        {
+            return _context.CountingSoftwareUsers.Find(id);
+        }
+
+        public List<CountingSoftwareUsers> GetWilayatsByWilayatId(string code)
+        {
+            return _context.CountingSoftwareUsers.Where(values => values.WilayatCode == code).ToList();
+        }
+
+        public List<CountingSoftwareUsers> GetWilayatsByWilayatIdRoleId(string code, int roleid)
+        {
+            return _context.CountingSoftwareUsers.Where(values => values.WilayatCode == code && values.RoleId == roleid).ToList();
+        }
+
+
+        public CountingSoftwareUsers Create(CountingSoftwareUsers user)
+        {
+            _context.CountingSoftwareUsers.Add(user);
+            _context.SaveChanges();
+            return user;
+        }
+
+        public void Update(CountingSoftwareUsers user)
+        {
+            var countingsoftwareusers = _context.CountingSoftwareUsers.Find(user.Id);
+
+            if (countingsoftwareusers == null)
+                throw new AppException("User not found");
+
+
+            // update user properties
+            countingsoftwareusers.Password = user.Password;
+            countingsoftwareusers.RoleId = user.RoleId;
+            countingsoftwareusers.Username = user.Username;
+            countingsoftwareusers.WilayatCode = user.WilayatCode;
+            _context.CountingSoftwareUsers.Update(countingsoftwareusers);
+            _context.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var countingsoftwareusers = _context.CountingSoftwareUsers.Find(id);
+            if (countingsoftwareusers != null)
+            {
+                _context.CountingSoftwareUsers.Remove(countingsoftwareusers);
                 _context.SaveChanges();
             }
         }
