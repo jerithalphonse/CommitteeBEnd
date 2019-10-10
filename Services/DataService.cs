@@ -29,7 +29,7 @@ namespace WebApi.Services
 
         public IEnumerable<Governorates> GetAll()
         {
-            return _context.Governorates;
+            return _context.Governorates.OrderBy(values => values.SortOrder);
         }
 
         public Governorates GetById(int id)
@@ -75,6 +75,7 @@ namespace WebApi.Services
     public interface IWilayatService
     {
         IEnumerable<Wilayats> GetAll();
+        IEnumerable<Wilayats> GetByCode(string code);
         Wilayats GetById(int id);
         List<Wilayats> GetWilayatsByGovernorateId(string id);
         Wilayats Create(Wilayats wilayats);
@@ -93,17 +94,21 @@ namespace WebApi.Services
 
         public IEnumerable<Wilayats> GetAll()
         {
-            return _context.Wilayats.Include(values => values.Governorate);
+            return _context.Wilayats.Include(values => values.Governorate).OrderBy(values => values.SortOrder);
         }
 
         public Wilayats GetById(int id)
         {
             return _context.Wilayats.Find(id);
         }
+        public IEnumerable<Wilayats> GetByCode(string code)
+        {
+            return _context.Wilayats.Where(values => values.Code == code).OrderBy(values => values.SortOrder);
+        }
 
         public List<Wilayats> GetWilayatsByGovernorateId(string id)
         {
-            return _context.Wilayats.Where(values => values.GovernorateCode == id).ToList();
+            return _context.Wilayats.Where(values => values.GovernorateCode == id).OrderBy(values => values.SortOrder).ToList();
         }
 
 
@@ -218,6 +223,7 @@ namespace WebApi.Services
         Kiosks GetById(int id);
         IQueryable<Kiosks> GetBySerialId(string serial);
         IQueryable<Object> GetKiosksAssignedByWilayatsId(string id);
+        IEnumerable<Kiosks> GetKiosksVotingStatusByWilayatsId(string id);
         IQueryable<Object> GetKiosksAssignedByGovernorateId(string id);
         IQueryable<Object> GetKiosksAssignedAll();
         IEnumerable<Kiosks> GetKiosksByPollingStationId(int id);
@@ -251,6 +257,10 @@ namespace WebApi.Services
         public Kiosks GetById(int id)
         {
             return _context.Kiosks.Find(id);
+        }
+        public IEnumerable<Kiosks> GetKiosksVotingStatusByWilayatsId(string id)
+        {
+            return _context.Kiosks.Include(values => values.PollingStation).Where(values => values.WilayatCode == id);
         }
 
         public IQueryable<Kiosks> GetBySerialId(string serial)
@@ -299,6 +309,8 @@ namespace WebApi.Services
                        IsUnifiedKiosk = kioskslist.IsUnifiedKiosk,
                        AreVotersPresentAsWitnesses = kioskslist.AreVotersPresentAsWitnesses,
                        IsNoFingerprintKiosk = kioskslist.IsNoFingerprintKiosk,
+                       NoOfVotes = kioskslist.NoOfVotes,
+                       LastRegisteredVoteAt = kioskslist.LastRegisteredVoteAt,
                        PollingStationID = kioskslist.PollingStationID,
                        PollingStation = kioskslist.PollingStation,
                        kiosksAssigned = assigns,
@@ -327,6 +339,8 @@ namespace WebApi.Services
                        IsUnifiedKiosk = kioskslist.IsUnifiedKiosk,
                        AreVotersPresentAsWitnesses = kioskslist.AreVotersPresentAsWitnesses,
                        IsNoFingerprintKiosk = kioskslist.IsNoFingerprintKiosk,
+                       NoOfVotes = kioskslist.NoOfVotes,
+                       LastRegisteredVoteAt = kioskslist.LastRegisteredVoteAt,
                        PollingStationID = kioskslist.PollingStationID,
                        PollingStation = kioskslist.PollingStation,
                        kiosksAssigned = assigns,
@@ -353,6 +367,8 @@ namespace WebApi.Services
                        IsUnifiedKiosk = kioskslist.IsUnifiedKiosk,
                        AreVotersPresentAsWitnesses = kioskslist.AreVotersPresentAsWitnesses,
                        IsNoFingerprintKiosk = kioskslist.IsNoFingerprintKiosk,
+                       NoOfVotes = kioskslist.NoOfVotes,
+                       LastRegisteredVoteAt = kioskslist.LastRegisteredVoteAt,
                        PollingStationID = kioskslist.PollingStationID,
                        PollingStation = kioskslist.PollingStation,
                        kiosksAssigned = assigns,
@@ -395,6 +411,8 @@ namespace WebApi.Services
             // update user properties
             kiosks.IsActive = kiosksParam.IsActive;
             kiosks.IsNoFingerprintKiosk = kiosksParam.IsNoFingerprintKiosk;
+            kiosks.NoOfVotes = kiosksParam.NoOfVotes;
+            kiosks.LastRegisteredVoteAt = kiosksParam.LastRegisteredVoteAt;
             kiosks.IsUnifiedKiosk = kiosksParam.IsUnifiedKiosk;
             kiosks.WilayatCode = kiosksParam.WilayatCode;
             kiosks.OpenTime = kiosksParam.OpenTime;
@@ -793,6 +811,7 @@ namespace WebApi.Services
         CountingSoftwareUsers GetById(int id);
         List<CountingSoftwareUsers> GetWilayatsByWilayatId(string id);
         List<CountingSoftwareUsers> GetWilayatsByWilayatIdRoleId(string code, int roleid);
+        List<CountingSoftwareUsers> GetWilayatsByRoleId(int roleid);
         CountingSoftwareUsers Create(CountingSoftwareUsers wilayats);
         void Update(CountingSoftwareUsers wilayats);
         void Delete(int id);
@@ -826,7 +845,11 @@ namespace WebApi.Services
         {
             return _context.CountingSoftwareUsers.Where(values => values.WilayatCode == code && values.RoleId == roleid).ToList();
         }
-
+        public List<CountingSoftwareUsers> GetWilayatsByRoleId(int roleid)
+        {
+            return _context.CountingSoftwareUsers.Where(values => values.RoleId == roleid).ToList();
+        }
+        
 
         public CountingSoftwareUsers Create(CountingSoftwareUsers user)
         {

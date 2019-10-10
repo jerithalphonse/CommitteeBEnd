@@ -42,6 +42,13 @@ namespace WebApi.Controllers
             var wilayatsDtos = _mapper.Map<IList<WilayatsDto>>(wilayats);
             return Ok(wilayatsDtos);
         }
+        [HttpGet("{code}")]
+        public OkObjectResult GetByCode(string code)
+        {
+            var wilayats = _wilayatService.GetByCode(code);
+            var wilayatsDtos = _mapper.Map<IList<WilayatsDto>>(wilayats);
+            return Ok(wilayatsDtos);
+        }
         // GET api/values/5
         [HttpGet("governorate/{id}")]
         public OkObjectResult Get(string id)

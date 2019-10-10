@@ -49,6 +49,13 @@ namespace WebApi.Controllers
             var countingsoftwareusersDtos = _mapper.Map<IList<CountingSoftwareUsersDto>>(countingsoftwareusers);
             return Ok(countingsoftwareusersDtos);
         }
+        [HttpGet("wilayat/role/{roleid}")]
+        public OkObjectResult GetWilayatsByRoleId(int roleid)
+        {
+            var countingsoftwareusers = _iCountingSoftwareService.GetWilayatsByRoleId(roleid);
+            var countingsoftwareusersDtos = _mapper.Map<IList<CountingSoftwareUsersDto>>(countingsoftwareusers);
+            return Ok(countingsoftwareusersDtos);
+        }
         [HttpGet("wilayat/{code}/{roleid}")]
         public OkObjectResult GetWilayatsByWilayatIdRoleId(string code, int roleid)
         {

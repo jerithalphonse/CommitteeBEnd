@@ -27,6 +27,7 @@ namespace WebApi.Dtos
         public bool MessageTabRestrictMessage { get; set; }
         public bool NotificationTab { get; set; }
         public bool? CountingSoftwareTab { get; set; }
+        public bool? VotingTab { get; set; }
     }
     public class GovernoratesDto
 	{
@@ -64,6 +65,8 @@ namespace WebApi.Dtos
         public string GovernorateCode { get; set; }
         public int SortOrder { get; set; }
         public bool IsActive { get; set; }
+        public int? RegisteredFemaleVoters { get; set; }
+        public int? RegisteredMaleVoters { get; set; }
 
         [ForeignKey("GovernorateCode")]
         public Governorates Governorate { get; set; }
@@ -109,6 +112,8 @@ namespace WebApi.Dtos
         public bool IsUnifiedKiosk { get; set; }
         public bool AreVotersPresentAsWitnesses { get; set; }
         public bool IsNoFingerprintKiosk { get; set; }
+        public string LastRegisteredVoteAt { get; set; }
+        public int? NoOfVotes { get; set; }
 
         [ForeignKey("WilayatCode")]
         public Wilayats Wilayat { get; set; }
