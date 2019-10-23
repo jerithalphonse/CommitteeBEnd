@@ -23,6 +23,7 @@ namespace WebApi.Dtos
         public int? PollingStationId { get; set; }
         public int? KioskId { get; set; }
         public int? RoleId { get; set; }
+        public bool? PasswordChanged { get; set; }
 
         [ForeignKey("GovernorateCode")]
         public Governorates Governorate { get; set; }

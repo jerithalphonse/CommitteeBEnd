@@ -1,11 +1,13 @@
 ﻿<Properties StartupConfiguration="{ED50A217-3989-4E72-BCE0-B96E3CC65059}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Services/UserService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Services/DataService.cs">
     <Files>
-      <File FileName="Controllers/KiosksAssignmentController.cs" Line="79" Column="58" />
-      <File FileName="Services/DataService.cs" />
-      <File FileName="Controllers/KiosksController.cs" Line="26" Column="51" />
-      <File FileName="Controllers/UsersController.cs" Line="159" Column="54" />
-      <File FileName="Services/UserService.cs" Line="82" Column="27" />
+      <File FileName="Services/DataService.cs" Line="292" Column="35" />
+      <File FileName="Entities/Governorates.cs" Line="106" Column="48" />
+      <File FileName="Dtos/GovernoratesDto.cs" Line="50" Column="51" />
+      <File FileName="Migrations/20190905062045_InitialCreate.Designer.cs" Line="48" Column="46" />
+      <File FileName="Controllers/UsersController.cs" Line="156" Column="22" />
+      <File FileName="Controllers/KiosksAssignmentController.cs" Line="78" Column="55" />
+      <File FileName="Controllers/KiosksController.cs" Line="67" Column="55" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -13,13 +15,11 @@
           <Node name="WebApi" expanded="True">
             <Node name="WebApi" expanded="True">
               <Node name="Controllers" expanded="True" />
-              <Node name="Dtos" expanded="True" />
-              <Node name="Entities" expanded="True" />
-              <Node name="Helpers" expanded="True" />
               <Node name="Migrations" expanded="True" />
               <Node name="Properties" expanded="True" />
+              <Node name="public" expanded="True" />
               <Node name="Services" expanded="True">
-                <Node name="UserService.cs" selected="True" />
+                <Node name="DataService.cs" selected="True" />
               </Node>
             </Node>
           </Node>

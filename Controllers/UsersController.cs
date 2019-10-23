@@ -94,6 +94,7 @@ namespace WebApi.Controllers
                 Roles = user.Roles,
                 Wilayat = user.Wilayat,
                 PollingStation = user.PollingStation,
+                PasswordChanged = user.PasswordChanged,
                 Kiosks = user.Kiosks,
                 Token = tokenString,
                 Governorate = user.Governorate
@@ -251,7 +252,7 @@ namespace WebApi.Controllers
             foreach (var formFile in files)
             {
                 var file = System.IO.Path.Combine(webRoot + "/" + userId, formFile.FileName);
-                FilesUploaded.Add("http://5.37.60.164:5026/committeebackend" + "/" + userId + "/" + formFile.FileName);
+                FilesUploaded.Add("https://capp.elections.om/committeebackend" + "/" + userId + "/" + formFile.FileName);
                 if (formFile.Length > 0)
                 {
                     using (var stream = new FileStream(file, FileMode.Create))

@@ -499,6 +499,8 @@ namespace WebApi.Services
                        Kiosks = users.Kiosks,
                        RoleId = users.RoleId,
                        roles = users.Roles,
+                       PasswordChanged = users.PasswordChanged,
+                       AttendedAt = users.AttendedAt,
                        kiosksAssigned = assigns,
                        kiosksAssignedKiosk = assigns.kiosks
                    };
@@ -523,6 +525,8 @@ namespace WebApi.Services
                        PollingStation = users.PollingStation,
                        Kiosks = users.Kiosks,
                        RoleId = users.RoleId,
+                       PasswordChanged = users.PasswordChanged,
+                       AttendedAt = users.AttendedAt,
                        roles = users.Roles,
                        kiosksAssigned = assigns,
                        kiosksAssignedKiosk = assigns.kiosks
@@ -547,6 +551,8 @@ namespace WebApi.Services
                        PollingStation = users.PollingStation,
                        Kiosks = users.Kiosks,
                        RoleId = users.RoleId,
+                       PasswordChanged = users.PasswordChanged,
+                       AttendedAt = users.AttendedAt,
                        roles = users.Roles,
                        kiosksAssigned = assigns,
                        kiosksAssignedKiosk = assigns.kiosks
@@ -567,6 +573,8 @@ namespace WebApi.Services
                        Phone = users.Phone,
                        Email = users.Email,
                        ImageUrl = users.ImageUrl,
+                       PasswordChanged = users.PasswordChanged,
+                       AttendedAt = users.AttendedAt,
                        CommiteeType = users.CommiteeType,
                        Gender = users.Gender,
                        PollingStation = users.PollingStation,

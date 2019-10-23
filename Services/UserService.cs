@@ -46,7 +46,7 @@ namespace WebApi.Services
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
             }
-
+            user.PasswordChanged = true;
             _context.Users.Update(user);
             _context.SaveChanges();
             return true;
@@ -155,6 +155,7 @@ namespace WebApi.Services
             user.RoleId = userParam.RoleId;
             user.Email = userParam.Email;
             user.AttendedAt = userParam.AttendedAt;
+            user.PasswordChanged = user.PasswordChanged;
 
             // update password if it was entered
             if (!string.IsNullOrWhiteSpace(password))

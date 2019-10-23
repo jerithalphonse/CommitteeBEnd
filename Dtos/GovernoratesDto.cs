@@ -102,9 +102,9 @@ namespace WebApi.Dtos
         public int Id { get; set; }
         public string SerialNumber { get; set; }
         public int PollingDayStatus { get; set; }
-        public string OpenTime { get; set; }
+        public System.Nullable<System.DateTime> OpenTime { get; set; }
         public bool HasIssue { get; set; }
-        public string CloseTime { get; set; }
+        public System.Nullable<System.DateTime> CloseTime { get; set; }
         public string UnlockCode { get; set; }
         public string WilayatCode { get; set; }
         public int PollingStationID { get; set; }
