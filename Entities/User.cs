@@ -35,4 +35,17 @@ namespace WebApi.Entities
         [ForeignKey("RoleId")]
         public Roles Roles { get; set; }
     }
+    public class BankDetails
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public string BankName { get; set; }
+        public string BranchName { get; set; }
+        public string AccountNo { get; set; }
+        public int CivilId { get; set; }
+        public string CivilIdUrl { get; set; }
+
+        [ForeignKey("UserId")]
+        public User User { get; set; }
+    }
 }

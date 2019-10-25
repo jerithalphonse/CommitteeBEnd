@@ -37,6 +37,20 @@ namespace WebApi.Dtos
         public Roles Roles { get; set; }
     }
 
+    public class BankDetailsDto
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public string BankName { get; set; }
+        public string BranchName { get; set; }
+        public string AccountNo { get; set; }
+        public int CivilId { get; set; }
+        public string CivilIdUrl { get; set; }
+
+        [ForeignKey("UserId")]
+        public User User { get; set; }
+    }
+
     public class ChangePassword
     {
         public int Id { get; set; }

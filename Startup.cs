@@ -82,6 +82,7 @@ namespace WebApi
             services.AddScoped<IWitnessService, WitnessService>();
             services.AddScoped<IMessagingService, MessagingService>();
             services.AddScoped<ICountingSoftwareService, CountingSoftwareService>();
+            services.AddScoped<IBankingDetailsService, BankingDetailsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

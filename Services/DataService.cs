@@ -224,6 +224,7 @@ namespace WebApi.Services
         IQueryable<Kiosks> GetBySerialId(string serial);
         IQueryable<Object> GetKiosksAssignedByWilayatsId(string id);
         IEnumerable<Kiosks> GetKiosksVotingStatusByWilayatsId(string id);
+        IEnumerable<Kiosks> GetKiosksVotingStatus(string id);
         IQueryable<Object> GetKiosksAssignedByGovernorateId(string id);
         IQueryable<Object> GetKiosksAssignedAll();
         IEnumerable<Kiosks> GetKiosksByPollingStationId(int id);
@@ -261,6 +262,10 @@ namespace WebApi.Services
         public IEnumerable<Kiosks> GetKiosksVotingStatusByWilayatsId(string id)
         {
             return _context.Kiosks.Include(values => values.PollingStation).Where(values => values.WilayatCode == id);
+        }
+        public IEnumerable<Kiosks> GetKiosksVotingStatus(string id)
+        {
+            return _context.Kiosks.Include(values => values.PollingStation);
         }
 
         public IQueryable<Kiosks> GetBySerialId(string serial)
@@ -889,6 +894,72 @@ namespace WebApi.Services
             if (countingsoftwareusers != null)
             {
                 _context.CountingSoftwareUsers.Remove(countingsoftwareusers);
+                _context.SaveChanges();
+            }
+        }
+    }
+
+    public interface IBankingDetailsService
+    {
+        IEnumerable<BankDetails> GetAll();
+        IEnumerable<BankDetails> GetByUserId(int id);
+        BankDetails Create(BankDetails bankdetails);
+        void Update(BankDetails bankdetails);
+        void Delete(int id);
+    }
+
+    public class BankingDetailsService : IBankingDetailsService
+    {
+        private DataContext _context;
+
+        public BankingDetailsService(DataContext context)
+        {
+            _context = context;
+        }
+
+        public IEnumerable<BankDetails> GetAll()
+        {
+            return _context.BankDetails.Include(values => values.User);
+        }
+
+        public IEnumerable<BankDetails> GetByUserId(int id)
+        {
+            return _context.BankDetails.Where(values => values.UserId == id);
+        }
+
+      
+        public BankDetails Create(BankDetails bankDetails)
+        {
+            _context.BankDetails.Add(bankDetails);
+            _context.SaveChanges();
+            return bankDetails;
+        }
+
+        public void Update(BankDetails bankDetails)
+        {
+            var bankDetailsUser = _context.BankDetails.Find(bankDetails.Id);
+
+            if (bankDetailsUser == null)
+                throw new AppException("User not found");
+
+
+            // update user properties
+            bankDetailsUser.AccountNo = bankDetails.AccountNo;
+            bankDetailsUser.BankName = bankDetails.BankName;
+            bankDetailsUser.BranchName = bankDetails.BranchName;
+            bankDetailsUser.CivilId = bankDetails.CivilId;
+            bankDetailsUser.CivilIdUrl = bankDetails.CivilIdUrl;
+            bankDetailsUser.UserId = bankDetails.UserId;
+            _context.BankDetails.Update(bankDetailsUser);
+            _context.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var bankDetails = _context.BankDetails.Find(id);
+            if (bankDetails != null)
+            {
+                _context.BankDetails.Remove(bankDetails);
                 _context.SaveChanges();
             }
         }
