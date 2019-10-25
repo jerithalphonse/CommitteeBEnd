@@ -221,6 +221,20 @@ namespace WebApi.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+        [HttpPut("resetpassword/{id}")]
+        public IActionResult ResetPasswordForId([FromBody]ChangePassword changePassword)
+        {
+            try
+            {
+                var temp = _userService.ResetPasswordForId(changePassword.Id, changePassword.newpassword);
+                return Ok(new { success = temp });
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)

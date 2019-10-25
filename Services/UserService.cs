@@ -11,6 +11,7 @@ namespace WebApi.Services
     {
         User Authenticate(string username, string password);
         bool UpdatePassword(int id, string oldpassword, string newpassword);
+        bool ResetPasswordForId(int id, string newpassword);
         IEnumerable<User> GetAll();
         List<User> GetUsersByWilayatId(string id);
         List<User> GetUsersByGovernorateId(string id);
@@ -46,6 +47,22 @@ namespace WebApi.Services
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
             }
+            user.PasswordChanged = true;
+            _context.Users.Update(user);
+            _context.SaveChanges();
+            return true;
+        }
+        public bool ResetPasswordForId(int id, string newpassword)
+        {
+            var user = _context.Users.SingleOrDefault(x => x.Username == id.ToString());
+            if (!string.IsNullOrWhiteSpace(newpassword))
+            {
+                byte[] passwordHash, passwordSalt;
+                CreatePasswordHash(newpassword, out passwordHash, out passwordSalt);
+
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+            } 
             user.PasswordChanged = true;
             _context.Users.Update(user);
             _context.SaveChanges();
