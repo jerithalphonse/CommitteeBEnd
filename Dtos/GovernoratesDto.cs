@@ -112,7 +112,7 @@ namespace WebApi.Dtos
         public bool IsUnifiedKiosk { get; set; }
         public bool AreVotersPresentAsWitnesses { get; set; }
         public bool IsNoFingerprintKiosk { get; set; }
-        public string LastRegisteredVoteAt { get; set; }
+        public System.Nullable<System.DateTime> LastRegisteredVoteAt { get; set; }
         public int? NoOfVotes { get; set; }
 
         [ForeignKey("WilayatCode")]
