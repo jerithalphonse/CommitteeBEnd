@@ -50,7 +50,6 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]BankDetailsDto bankDetails)
         {
-            // map dto to entity
             var bankDetailsEntity = _mapper.Map<BankDetails>(bankDetails);
             try
             {
@@ -63,6 +62,7 @@ namespace WebApi.Controllers
                 // return error message if there was an exception
                 return BadRequest(new { message = ex.Message });
             }
+           
         }
 
         // PUT api/values/5

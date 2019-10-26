@@ -930,9 +930,27 @@ namespace WebApi.Services
       
         public BankDetails Create(BankDetails bankDetails)
         {
-            _context.BankDetails.Add(bankDetails);
-            _context.SaveChanges();
-            return bankDetails;
+            var bankDetailsUser = _context.BankDetails.SingleOrDefault(values => values.UserId == bankDetails.UserId);
+
+            if (bankDetailsUser == null)
+            {
+                _context.BankDetails.Add(bankDetails);
+                _context.SaveChanges();
+                return bankDetails;
+            }
+            else
+            {
+                // update user properties
+                bankDetailsUser.AccountNo = bankDetails.AccountNo;
+                bankDetailsUser.BankName = bankDetails.BankName;
+                bankDetailsUser.BranchName = bankDetails.BranchName;
+                bankDetailsUser.CivilId = bankDetails.CivilId;
+                bankDetailsUser.CivilIdUrl = bankDetails.CivilIdUrl;
+                bankDetailsUser.UserId = bankDetails.UserId;
+                _context.BankDetails.Update(bankDetailsUser);
+                _context.SaveChanges();
+                return bankDetailsUser;
+            }
         }
 
         public void Update(BankDetails bankDetails)
