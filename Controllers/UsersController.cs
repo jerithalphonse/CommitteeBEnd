@@ -65,7 +65,7 @@ namespace WebApi.Controllers
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[] 
+                Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
                 }),
@@ -107,12 +107,12 @@ namespace WebApi.Controllers
         {
             // map dto to entity
             var user = _mapper.Map<User>(userDto);
-            try 
+            try
             {
-                // save 
+                // save
                 _userService.Create(user, userDto.Password);
                 return Ok();
-            } 
+            }
             catch(AppException ex)
             {
                 // return error message if there was an exception
@@ -141,7 +141,7 @@ namespace WebApi.Controllers
                 foreach (var tempuser in users)
                 {
                     var user = _mapper.Map<User>(tempuser);
-                    // save 
+                    // save
                     _userService.Update(user, null);
                 }
             }
@@ -190,7 +190,7 @@ namespace WebApi.Controllers
             var userDtos = _mapper.Map<IList<UserDto>>(users);
             return Ok(userDtos);
         }
-        
+
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
@@ -200,7 +200,7 @@ namespace WebApi.Controllers
             return Ok(userDto);
         }
 
-       
+
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody]UserDto userDto)
@@ -209,12 +209,12 @@ namespace WebApi.Controllers
             var user = _mapper.Map<User>(userDto);
             user.Id = id;
 
-            try 
+            try
             {
-                // save 
+                // save
                 _userService.Update(user, userDto.Password);
                 return Ok();
-            } 
+            }
             catch(AppException ex)
             {
                 // return error message if there was an exception
@@ -277,7 +277,7 @@ namespace WebApi.Controllers
             }
             // process uploaded files
             // Don't rely on or trust the FileName property without validation.
-           
+
             return Ok(new { count = files.Count, size, FilesUploaded });
         }
     }

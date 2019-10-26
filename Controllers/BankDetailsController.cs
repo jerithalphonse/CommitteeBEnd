@@ -66,7 +66,7 @@ namespace WebApi.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public IActionResult Put([FromBody]BankDetailsDto bankDetails)
         {
             // map dto to entity and set id
